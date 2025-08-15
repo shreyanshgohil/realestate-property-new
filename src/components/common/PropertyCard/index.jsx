@@ -14,6 +14,49 @@ const PropertyCard = ({ property }) => {
     }
   };
 
+  const formatPropertyType = (type) => {
+    switch (type) {
+      case "APARTMENT":
+        return "Apartment";
+      case "HOUSE":
+        return "House";
+      case "COMMERCIAL":
+        return "Commercial";
+      case "PLOT":
+        return "Plot";
+      default:
+        return type;
+    }
+  };
+
+  const formatListingType = (type) => {
+    switch (type) {
+      case "SALE":
+        return "For Sale";
+      case "RENT":
+        return "For Rent";
+      case "LEASE":
+        return "For Lease";
+      default:
+        return type;
+    }
+  };
+
+  const formatConstructionStatus = (status) => {
+    switch (status) {
+      case "UNDER_CONSTRUCTION":
+        return "Under Construction";
+      case "READY_TO_MOVE":
+        return "Ready to Move";
+      case "PLANNED":
+        return "Planned";
+      case "COMPLETED":
+        return "Completed";
+      default:
+        return status;
+    }
+  };
+
   const getPropertyTypeColor = (type) => {
     const colors = {
       APARTMENT: "bg-blue-100 text-blue-800",
@@ -56,14 +99,14 @@ const PropertyCard = ({ property }) => {
               property.propertyType
             )}`}
           >
-            {property.propertyType}
+            {formatPropertyType(property.propertyType)}
           </span>
           <span
             className={`px-2 py-1 rounded-full text-xs font-medium ${getListingTypeColor(
               property.listingType
             )}`}
           >
-            {property.listingType}
+            {formatListingType(property.listingType)}
           </span>
         </div>
 
@@ -185,7 +228,7 @@ const PropertyCard = ({ property }) => {
           </span>
           {property.constructionStatus && (
             <span className="text-xs text-gray-600">
-              {property.constructionStatus.replace("_", " ")}
+              {formatConstructionStatus(property.constructionStatus)}
             </span>
           )}
         </div>

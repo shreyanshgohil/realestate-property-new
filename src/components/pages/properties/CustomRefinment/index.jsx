@@ -14,6 +14,63 @@ const CustomRefinement = ({
     });
   };
 
+  // Helper function to convert uppercase property types and listing types to proper case
+  const formatPropertyType = (value) => {
+    if (attribute === "propertyType") {
+      switch (value) {
+        case "APARTMENT":
+          return "Apartment";
+        case "HOUSE":
+          return "House";
+        case "COMMERCIAL":
+          return "Commercial";
+        case "PLOT":
+          return "Plot";
+        default:
+          return value;
+      }
+    }
+    if (attribute === "listingType") {
+      switch (value) {
+        case "SALE":
+          return "For Sale";
+        case "RENT":
+          return "For Rent";
+        case "LEASE":
+          return "For Lease";
+        default:
+          return value;
+      }
+    }
+    if (attribute === "constructionStatus") {
+      switch (value) {
+        case "UNDER_CONSTRUCTION":
+          return "Under Construction";
+        case "READY_TO_MOVE":
+          return "Ready to Move";
+        case "PLANNED":
+          return "Planned";
+        case "COMPLETED":
+          return "Completed";
+        default:
+          return value;
+      }
+    }
+    if (attribute === "furnishingStatus") {
+      switch (value) {
+        case "FURNISHED":
+          return "Furnished";
+        case "SEMI_FURNISHED":
+          return "Semi Furnished";
+        case "UNFURNISHED":
+          return "Unfurnished";
+        default:
+          return value;
+      }
+    }
+    return value;
+  };
+
   if (!data || data.length === 0) {
     return <div className="text-sm text-brand-gray">No options available</div>;
   }
@@ -37,8 +94,8 @@ const CustomRefinement = ({
                   checked={isSelected}
                   onChange={() => handleFilterChange(itemValue)}
                 />
-                <span className="inline-block ml-3 capitalize">
-                  {itemValue}
+                <span className="inline-block ml-3">
+                  {formatPropertyType(itemValue)}
                 </span>
               </div>
             </label>

@@ -57,6 +57,66 @@ const PropertiesContent = (props) => {
   // Debounced filter application for range filters
   const [debouncedFilters, setDebouncedFilters] = useState(filters);
 
+  // Helper function to format property types for display
+  const formatPropertyType = (type) => {
+    switch (type) {
+      case "APARTMENT":
+        return "Apartment";
+      case "HOUSE":
+        return "House";
+      case "COMMERCIAL":
+        return "Commercial";
+      case "PLOT":
+        return "Plot";
+      default:
+        return type;
+    }
+  };
+
+  // Helper function to format listing types for display
+  const formatListingType = (type) => {
+    switch (type) {
+      case "SALE":
+        return "For Sale";
+      case "RENT":
+        return "For Rent";
+      case "LEASE":
+        return "For Lease";
+      default:
+        return type;
+    }
+  };
+
+  // Helper function to format construction status for display
+  const formatConstructionStatus = (status) => {
+    switch (status) {
+      case "UNDER_CONSTRUCTION":
+        return "Under Construction";
+      case "READY_TO_MOVE":
+        return "Ready to Move";
+      case "PLANNED":
+        return "Planned";
+      case "COMPLETED":
+        return "Completed";
+      default:
+        return status;
+    }
+  };
+
+  // Helper function to format furnishing status for display
+  const formatFurnishingStatus = (status) => {
+    switch (status) {
+      case "FURNISHED":
+        return "Furnished";
+      case "SEMI_FURNISHED":
+        return "Semi Furnished";
+      case "UNFURNISHED":
+        return "Unfurnished";
+      default:
+        return status;
+    }
+  };
+
   // Function to fetch data from API
   const fetchData = useCallback(async (queryParams) => {
     try {
@@ -407,13 +467,19 @@ const PropertiesContent = (props) => {
                     </div>
                     <div className="flex flex-wrap gap-2">
                       {filters.propertyType.length > 0 && (
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-brand-theme/10 text-brand-theme capitalize">
-                          Property Type: {filters.propertyType.join(", ")}
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-brand-theme/10 text-brand-theme">
+                          Property Type:{" "}
+                          {filters.propertyType
+                            .map(formatPropertyType)
+                            .join(", ")}
                         </span>
                       )}
                       {filters.listingType.length > 0 && (
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-brand-theme/10 text-brand-theme capitalize">
-                          Listing Type: {filters.listingType.join(", ")}
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-brand-theme/10 text-brand-theme">
+                          Listing Type:{" "}
+                          {filters.listingType
+                            .map(formatListingType)
+                            .join(", ")}
                         </span>
                       )}
                       {filters.city.length > 0 && (
@@ -422,13 +488,19 @@ const PropertiesContent = (props) => {
                         </span>
                       )}
                       {filters.constructionStatus.length > 0 && (
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-brand-theme/10 text-brand-theme capitalize">
-                          Construction: {filters.constructionStatus.join(", ")}
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-brand-theme/10 text-brand-theme">
+                          Construction:{" "}
+                          {filters.constructionStatus
+                            .map(formatConstructionStatus)
+                            .join(", ")}
                         </span>
                       )}
                       {filters.furnishingStatus.length > 0 && (
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-brand-theme/10 text-brand-theme capitalize">
-                          Furnishing: {filters.furnishingStatus.join(", ")}
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-brand-theme/10 text-brand-theme">
+                          Furnishing:{" "}
+                          {filters.furnishingStatus
+                            .map(formatFurnishingStatus)
+                            .join(", ")}
                         </span>
                       )}
                       {(filters.priceMin.min > (facets?.priceMin?.min || 0) ||
