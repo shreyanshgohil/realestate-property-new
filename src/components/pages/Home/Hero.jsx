@@ -55,15 +55,15 @@ const Hero = ({ propertyTypes }) => {
   const getPropertyTypeIcon = (type) => {
     switch (type) {
       case "APARTMENT":
-        return <FaHome />;
+        return { icon: <FaHome />, label: "Apartment" };
       case "HOUSE":
-        return <FaHome />;
+        return { icon: <FaHome />, label: "House" };
       case "COMMERCIAL":
-        return <FaStore />;
+        return { icon: <FaStore />, label: "Commercial" };
       case "PLOT":
-        return <FaMapMarkedAlt />;
+        return { icon: <FaMapMarkedAlt />, label: "Plot" };
       default:
-        return <FaBuilding />;
+        return { icon: <FaBuilding />, label: "Property" };
     }
   };
 
@@ -107,8 +107,8 @@ const Hero = ({ propertyTypes }) => {
                       }`}
                       style={{ borderRadius: "4px" }}
                     >
-                      {getPropertyTypeIcon(propertyType)}
-                      <span>{propertyType.replace(/_/g, " ")}</span>
+                      {getPropertyTypeIcon(propertyType).icon}
+                      <span>{getPropertyTypeIcon(propertyType).label}</span>
                     </button>
                   );
                 })}
