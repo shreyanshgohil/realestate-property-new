@@ -40,7 +40,7 @@ const Header = () => {
             className="button--secondary w-full btn--black sm text-sm pill flex items-center gap-1.5 hi"
           >
             <IoSearch className="text-base" />
-            <span>Search Influencer</span>
+            <span>Search Properties</span>
           </Link>
         </div>
       </div>

@@ -1,52 +1,69 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { FiInstagram, FiYoutube } from "react-icons/fi";
+import { FaHome, FaBuilding, FaStore, FaMapMarkedAlt } from "react-icons/fa";
 import { IoSearch } from "react-icons/io5";
 
-const Hero = ({ typesOfProjectAvailableToWork }) => {
+const Hero = ({ propertyTypes }) => {
   const router = useRouter();
 
-  // State management for platform selection
-  const [selectedPlatforms, setSelectedPlatforms] = useState([]);
-  const [selectedTypeOfContent, setSelectedTypeOfContent] = useState("");
+  // State management for property type selection
+  const [selectedPropertyTypes, setSelectedPropertyTypes] = useState([]);
+  const [selectedListingType, setSelectedListingType] = useState("");
 
-  // Handle platform selection/deselection
-  const handlePlatformToggle = (platform) => {
-    if (selectedPlatforms.includes(platform)) {
-      setSelectedPlatforms(selectedPlatforms.filter((p) => p !== platform));
+  // Handle property type selection/deselection
+  const handlePropertyTypeToggle = (propertyType) => {
+    if (selectedPropertyTypes.includes(propertyType)) {
+      setSelectedPropertyTypes(
+        selectedPropertyTypes.filter((p) => p !== propertyType)
+      );
     } else {
-      setSelectedPlatforms([...selectedPlatforms, platform]);
+      setSelectedPropertyTypes([...selectedPropertyTypes, propertyType]);
     }
   };
 
-  // Handle search button click - navigate to influencers page with refinements
+  // Handle search button click - navigate to properties page with refinements
   const handleSearch = () => {
     const query = {};
 
-    // ✅ Send platforms as an array (so backend gets array directly)
-    if (selectedPlatforms.length > 0) {
-      query.mainAdvertizingPlatforms = selectedPlatforms;
+    // Send property types as an array
+    if (selectedPropertyTypes.length > 0) {
+      query.propertyType = selectedPropertyTypes;
     }
 
-    // Add selected type of content if chosen
-    if (selectedTypeOfContent) {
-      query.typesOfProjectAvailableToWork = selectedTypeOfContent;
+    // Add selected listing type if chosen
+    if (selectedListingType) {
+      query.listingType = selectedListingType;
     }
 
     router.push({
-      pathname: "/creators",
+      pathname: "/creators", // This will be the properties page
       query,
     });
   };
 
-  const typeOfContentRefineHandler = (event) => {
+  const listingTypeRefineHandler = (event) => {
     const value = event.target.value;
 
     if (value !== "initial") {
-      setSelectedTypeOfContent(value);
+      setSelectedListingType(value);
     } else {
-      setSelectedTypeOfContent("");
+      setSelectedListingType("");
+    }
+  };
+
+  const getPropertyTypeIcon = (type) => {
+    switch (type) {
+      case "APARTMENT":
+        return <FaHome />;
+      case "HOUSE":
+        return <FaHome />;
+      case "COMMERCIAL":
+        return <FaStore />;
+      case "PLOT":
+        return <FaMapMarkedAlt />;
+      default:
+        return <FaBuilding />;
     }
   };
 
@@ -66,63 +83,54 @@ const Hero = ({ typesOfProjectAvailableToWork }) => {
           style={{ maxWidth: "544px" }}
         >
           <h1 className="heading--h2 text-brand-blue-700 mb-5 md:mb-8">
-            Find the right content creator to elevate your brand
+            Find your perfect property
           </h1>
 
-          {/* Platform Selection */}
+          {/* Property Type Selection */}
           <div>
             <p className="text-brand-blue-700 font-semibold mb-2">
-              Which type of platform promotion are you looking for?
+              What type of property are you looking for?
             </p>
-            <div className="flex gap-2 md:gap-3 mb-6 md:mb-4 flex-col md:flex-row">
-              <button
-                onClick={() => handlePlatformToggle("Instagram")}
-                className={`text-brand-gray flex items-center gap-1.5 flex-1 justify-center py-3 px-4 border border-solid border-brand-gray-300 transition-all duration-300 hover:bg-brand-theme/10 hover:border-brand-theme hover:text-brand-theme ${
-                  selectedPlatforms.includes("Instagram")
-                    ? "bg-brand-theme/10 border-brand-theme text-brand-theme"
-                    : ""
-                }`}
-                style={{ borderRadius: "4px" }}
-              >
-                <FiInstagram />
-                <span>Instagram</span>
-              </button>
-
-              <button
-                onClick={() => handlePlatformToggle("YouTube")}
-                className={`text-brand-gray flex items-center gap-1.5 flex-1 justify-center py-3 p-4 border border-solid border-brand-gray-300 transition-all duration-300 hover:bg-brand-theme/10 hover:border-brand-theme hover:text-brand-theme ${
-                  selectedPlatforms.includes("YouTube")
-                    ? "bg-brand-theme/10 border-brand-theme text-brand-theme"
-                    : ""
-                }`}
-                style={{ borderRadius: "4px" }}
-              >
-                <FiYoutube />
-                YouTube
-              </button>
+            <div className="grid grid-cols-2 gap-2 md:gap-3 mb-6 md:mb-4">
+              {propertyTypes &&
+                propertyTypes.map((item, index) => {
+                  const propertyType =
+                    typeof item === "string" ? item : item.value;
+                  return (
+                    <button
+                      key={index}
+                      onClick={() => handlePropertyTypeToggle(propertyType)}
+                      className={`text-brand-gray flex items-center gap-1.5 justify-center py-3 px-4 border border-solid border-brand-gray-300 transition-all duration-300 hover:bg-brand-theme/10 hover:border-brand-theme hover:text-brand-theme ${
+                        selectedPropertyTypes.includes(propertyType)
+                          ? "bg-brand-theme/10 border-brand-theme text-brand-theme"
+                          : ""
+                      }`}
+                      style={{ borderRadius: "4px" }}
+                    >
+                      {getPropertyTypeIcon(propertyType)}
+                      <span>{propertyType.replace(/_/g, " ")}</span>
+                    </button>
+                  );
+                })}
             </div>
           </div>
 
-          {/* Content Type Selection */}
+          {/* Listing Type Selection */}
           <div>
             <p className="text-brand-blue-700 font-semibold mb-2">
-              What kind of content do you want to promote?
+              What type of listing do you prefer?
             </p>
             <div className="flex gap-3 mb-2.5">
               <select
                 className="select border border-brand-gray-300 outline-none w-full text-brand-gray cursor-pointer focus:border-brand-gray-300 focus:ring-0 capitalize"
                 style={{ borderRadius: "4px", height: "50px" }}
-                onChange={typeOfContentRefineHandler}
+                onChange={listingTypeRefineHandler}
                 defaultValue="initial"
               >
-                <option value="initial">Choose content type</option>
-                {typesOfProjectAvailableToWork.map((item, index) => {
-                  return (
-                    <option key={index} value={item.value}>
-                      {item.value}
-                    </option>
-                  );
-                })}
+                <option value="initial">Choose listing type</option>
+                <option value="SALE">For Sale</option>
+                <option value="RENT">For Rent</option>
+                <option value="LEASE">For Lease</option>
               </select>
             </div>
           </div>
@@ -133,7 +141,7 @@ const Hero = ({ typesOfProjectAvailableToWork }) => {
             className="button--primary flex items-center w-full justify-center font-medium gap-1.5 mt-8"
           >
             <IoSearch className="text-base" />
-            <span>Search</span>
+            <span>Search Properties</span>
           </button>
         </div>
       </div>
