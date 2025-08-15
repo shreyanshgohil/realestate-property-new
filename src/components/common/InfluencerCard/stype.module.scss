@@ -1,0 +1,10 @@
+.influencer-card {
+  .influencer-details {
+    transform: translateY(136px);
+  }
+  &:hover {
+    .influencer-details {
+      transform: translateY(0);
+    }
+  }
+}

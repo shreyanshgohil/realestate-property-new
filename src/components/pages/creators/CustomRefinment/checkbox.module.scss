@@ -1,0 +1,48 @@
+.input {
+  appearance: none;
+  background-color: #fff;
+  margin: 0;
+  margin-top: 3px;
+  font: inherit;
+  color: currentColor;
+  width: 20px;
+  height: 20px;
+  border: 1px solid #dbdfe4;
+  border-radius: 4px;
+  transform: translateY(-0.075em);
+  display: grid;
+  place-content: center;
+  @apply hover:cursor-pointer;
+}
+
+.input:checked {
+  background-color: #fff;
+  border: 1px solid #dbdfe4;
+}
+
+.input:checked:hover {
+  background-color: #fff;
+  border: 1px solid #dbdfe4;
+}
+
+.input:checked:focus {
+  background-color: #fff;
+  border: 1px solid #dbdfe4;
+}
+
+.input::before {
+  content: "";
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  transform: scale(0);
+  transition: 120ms transform ease-in-out;
+  box-shadow: inset 1em 1em #008080;
+}
+
+.input:checked::before {
+  transform: scale(0.9);
+}
+.input:focus {
+  box-shadow: none !important;
+}

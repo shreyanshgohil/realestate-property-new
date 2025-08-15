@@ -1,0 +1,128 @@
+// // Primary Button
+// .button--primary {
+//   position: relative;
+//   z-index: 2;
+//   overflow: hidden;
+//   vertical-align: middle;
+//   text-transform: capitalize;
+//   text-align: center;
+//   background-color: #112f49;
+//   color: #fff;
+
+//   font-weight: 600;
+//   padding: 16px 26px;
+//   min-width: 145px;
+//   transition: all 1s cubic-bezier(0.05, 0.83, 0.43, 0.96);
+//   overflow: hidden;
+
+//   &.sm {
+//     padding: 14px 24px;
+//     min-width: 120px;
+//   }
+
+//   &:before {
+//     content: "";
+//     position: absolute;
+//     height: 100%;
+//     top: 0;
+//     left: 0;
+//     width: 0%;
+//     background-color: #fff;
+//     z-index: -1;
+//     transition: 0.4s;
+//   }
+
+//   &:hover,
+//   &.active {
+//     &::before {
+//       width: 100%;
+//       background-color: #112f49;
+//       color: #fff;
+//     }
+
+//     color: #fff;
+//     box-shadow: none;
+
+//     i {
+//       transform: rotate(0deg);
+//     }
+//     &.left-icon i {
+//       transform: rotate(0deg);
+//     }
+//   }
+
+//   &.btn-sm {
+//     padding: 16px 25px;
+//     min-width: 152px;
+//   }
+
+//   &.pill {
+//     border-radius: 35px;
+//     &:before {
+//       border-radius: 35px;
+//     }
+//   }
+// }
+
+// // Icon Btn
+// .btn--black {
+//   color: #fff;
+//   text-align: center;
+//   border-radius: 0;
+//   transition: 0.4s ease-in-out;
+//   position: relative;
+//   background-color: #f6f2f1;
+
+//   &:hover {
+//     // background-color: #112f49;
+//     color: #fff;
+//   }
+
+//   &.style2 {
+//     background-color: #112f49;
+//     color: #fff;
+//     border: none;
+//     border-radius: 99px;
+
+//     &:hover {
+//       background-color: #112f49;
+//     }
+//   }
+// }
+
+// .btn--white {
+//   color: #1a1a1a;
+//   text-align: center;
+//   border-radius: 0;
+//   border: 1px solid #d8dde1;
+//   transition: 0.4s ease-in-out;
+//   position: relative;
+//   background-color: transparent;
+
+//   &:hover {
+//     background-color: #112f49;
+//     color: #fff;
+//     border-color: #112f49;
+//   }
+
+//   &.style2 {
+//     background-color: #112f49;
+//     color: #fff;
+//     border: none;
+//     border-radius: 99px;
+
+//     &:hover {
+//       background-color: #112f49;
+//     }
+//   }
+// }
+
+.button--primary {
+  @apply text-white py-3 px-4 bg-brand-theme rounded-md transition-all duration-300 font-semibold text-center;
+  @apply hover:bg-brand-theme-600;
+}
+
+.button--secondary {
+  @apply text-brand-blue-800 transition-all duration-300 font-semibold text-sm py-3 px-4 border border-solid border-gray-400 rounded-md;
+  @apply hover:border-brand-theme hover:text-brand-theme;
+}

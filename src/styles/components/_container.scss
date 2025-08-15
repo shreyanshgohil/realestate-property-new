@@ -1,0 +1,21 @@
+@layer components {
+  .container--boxed {
+    @apply max-w-[1440px] px-4 md:px-6 mx-auto;
+  }
+
+  .container--boxed--lg {
+    @apply max-w-[1330px] px-4 md:px-6 mx-auto;
+  }
+
+  .container--boxed--md {
+    @apply max-w-[1070px] px-4 md:px-6 mx-auto;
+  }
+
+  .container--boxed--2sm {
+    @apply max-w-[920px] px-4 md:px-6 mx-auto;
+  }
+
+  .container--boxed--sm {
+    @apply max-w-[786px] px-4 md:px-6 mx-auto;
+  }
+}
