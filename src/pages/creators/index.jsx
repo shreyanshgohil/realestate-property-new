@@ -107,187 +107,216 @@ const PropertiesContent = (props) => {
   // Sync filters with URL query parameters and update ranges when facets change
   useEffect(() => {
     if (router.isReady) {
-      const query = router.query;
-      const newFilters = {
-        propertyType: query.propertyType
-          ? Array.isArray(query.propertyType)
-            ? query.propertyType
-            : [query.propertyType]
-          : [],
-        listingType: query.listingType
-          ? Array.isArray(query.listingType)
-            ? query.listingType
-            : [query.listingType]
-          : [],
-        city: query.city
-          ? Array.isArray(query.city)
-            ? query.city
-            : [query.city]
-          : [],
-        constructionStatus: query.constructionStatus
-          ? Array.isArray(query.constructionStatus)
-            ? query.constructionStatus
-            : [query.constructionStatus]
-          : [],
-        furnishingStatus: query.furnishingStatus
-          ? Array.isArray(query.furnishingStatus)
-            ? query.furnishingStatus
-            : [query.furnishingStatus]
-          : [],
-        priceMin: {
-          min: parseInt(query.priceMinMin) || facets?.priceMin?.min || 0,
+      const queryFilters = {};
+
+      // Parse array filters
+      if (router.query.propertyType) {
+        queryFilters.propertyType = Array.isArray(router.query.propertyType)
+          ? router.query.propertyType
+          : [router.query.propertyType];
+      }
+
+      if (router.query.listingType) {
+        queryFilters.listingType = Array.isArray(router.query.listingType)
+          ? router.query.listingType
+          : [router.query.listingType];
+      }
+
+      if (router.query.city) {
+        queryFilters.city = Array.isArray(router.query.city)
+          ? router.query.city
+          : [router.query.city];
+      }
+
+      if (router.query.constructionStatus) {
+        queryFilters.constructionStatus = Array.isArray(
+          router.query.constructionStatus
+        )
+          ? router.query.constructionStatus
+          : [router.query.constructionStatus];
+      }
+
+      if (router.query.furnishingStatus) {
+        queryFilters.furnishingStatus = Array.isArray(
+          router.query.furnishingStatus
+        )
+          ? router.query.furnishingStatus
+          : [router.query.furnishingStatus];
+      }
+
+      // Parse range filters
+      if (router.query.priceMinMin || router.query.priceMinMax) {
+        queryFilters.priceMin = {
+          min: parseInt(router.query.priceMinMin) || facets?.priceMin?.min || 0,
           max:
-            parseInt(query.priceMinMax) || facets?.priceMin?.max || 100000000,
-        },
-        totalArea: {
-          min: parseInt(query.totalAreaMin) || facets?.totalArea?.min || 0,
-          max: parseInt(query.totalAreaMax) || facets?.totalArea?.max || 10000,
-        },
-        builtUpArea: {
-          min: parseInt(query.builtUpAreaMin) || facets?.builtUpArea?.min || 0,
+            parseInt(router.query.priceMinMax) ||
+            facets?.priceMin?.max ||
+            100000000,
+        };
+      }
+
+      if (router.query.totalAreaMin || router.query.totalAreaMax) {
+        queryFilters.totalArea = {
+          min:
+            parseInt(router.query.totalAreaMin) || facets?.totalArea?.min || 0,
           max:
-            parseInt(query.builtUpAreaMax) || facets?.builtUpArea?.max || 10000,
-        },
-        carpetArea: {
-          min: parseInt(query.carpetAreaMin) || facets?.carpetArea?.min || 0,
+            parseInt(router.query.totalAreaMax) ||
+            facets?.totalArea?.max ||
+            10000,
+        };
+      }
+
+      if (router.query.builtUpAreaMin || router.query.builtUpAreaMax) {
+        queryFilters.builtUpArea = {
+          min:
+            parseInt(router.query.builtUpAreaMin) ||
+            facets?.builtUpArea?.min ||
+            0,
           max:
-            parseInt(query.carpetAreaMax) || facets?.carpetArea?.max || 10000,
+            parseInt(router.query.builtUpAreaMax) ||
+            facets?.builtUpArea?.max ||
+            10000,
+        };
+      }
+
+      if (router.query.carpetAreaMin || router.query.carpetAreaMax) {
+        queryFilters.carpetArea = {
+          min:
+            parseInt(router.query.carpetAreaMin) ||
+            facets?.carpetArea?.min ||
+            0,
+          max:
+            parseInt(router.query.carpetAreaMax) ||
+            facets?.carpetArea?.max ||
+            10000,
+        };
+      }
+
+      setFilters((prev) => ({ ...prev, ...queryFilters }));
+    }
+  }, [router.isReady, router.query, facets]);
+
+  const updateURLWithFilters = useCallback(
+    (newFilters) => {
+      const query = { ...router.query };
+
+      // Update array filters
+      if (newFilters.propertyType?.length > 0) {
+        query.propertyType = newFilters.propertyType;
+      } else {
+        delete query.propertyType;
+      }
+
+      if (newFilters.listingType?.length > 0) {
+        query.listingType = newFilters.listingType;
+      } else {
+        delete query.listingType;
+      }
+
+      if (newFilters.city?.length > 0) {
+        query.city = newFilters.city;
+      } else {
+        delete query.city;
+      }
+
+      if (newFilters.constructionStatus?.length > 0) {
+        query.constructionStatus = newFilters.constructionStatus;
+      } else {
+        delete query.constructionStatus;
+      }
+
+      if (newFilters.furnishingStatus?.length > 0) {
+        query.furnishingStatus = newFilters.furnishingStatus;
+      } else {
+        delete query.furnishingStatus;
+      }
+
+      // Update range filters
+      if (
+        newFilters.priceMin?.min > (facets?.priceMin?.min || 0) ||
+        newFilters.priceMin?.max < (facets?.priceMin?.max || 100000000)
+      ) {
+        query.priceMinMin = newFilters.priceMin.min;
+        query.priceMinMax = newFilters.priceMin.max;
+      } else {
+        delete query.priceMinMin;
+        delete query.priceMinMax;
+      }
+
+      if (
+        newFilters.totalArea?.min > (facets?.totalArea?.min || 0) ||
+        newFilters.totalArea?.max < (facets?.totalArea?.max || 10000)
+      ) {
+        query.totalAreaMin = newFilters.totalArea.min;
+        query.totalAreaMax = newFilters.totalArea.max;
+      } else {
+        delete query.totalAreaMin;
+        delete query.totalAreaMax;
+      }
+
+      if (
+        newFilters.builtUpArea?.min > (facets?.builtUpArea?.min || 0) ||
+        newFilters.builtUpArea?.max < (facets?.builtUpArea?.max || 10000)
+      ) {
+        query.builtUpAreaMin = newFilters.builtUpArea.min;
+        query.builtUpAreaMax = newFilters.builtUpArea.max;
+      } else {
+        delete query.builtUpAreaMin;
+        delete query.builtUpAreaMax;
+      }
+
+      if (
+        newFilters.carpetArea?.min > (facets?.carpetArea?.min || 0) ||
+        newFilters.carpetArea?.max < (facets?.carpetArea?.max || 10000)
+      ) {
+        query.carpetAreaMin = newFilters.carpetArea.min;
+        query.carpetAreaMax = newFilters.carpetArea.max;
+      } else {
+        delete query.carpetAreaMin;
+        delete query.carpetAreaMax;
+      }
+
+      // Reset to page 1 when filters change
+      delete query.page;
+
+      // Update URL - useEffect will automatically fetch data when query changes
+      router.push(
+        {
+          pathname: router.pathname,
+          query,
         },
-      };
-      setFilters(newFilters);
+        undefined,
+        { shallow: true }
+      );
+    },
+    [router, facets]
+  );
+
+  const filtersChangeHandler = ({ type, key, value }) => {
+    const tempCopy = JSON.parse(JSON.stringify(filters));
+
+    if (type === "customRefinement") {
+      if (tempCopy?.[key]?.includes(value)) {
+        tempCopy[key] = tempCopy[key].filter((item) => item !== value);
+      } else if (tempCopy?.[key]) {
+        tempCopy[key] = [...tempCopy[key], value];
+      } else {
+        tempCopy[key] = [value];
+      }
+
+      // Apply checkbox filters immediately
+      setFilters(tempCopy);
+      updateURLWithFilters(tempCopy);
+    } else if (type === "range") {
+      tempCopy[key] = value;
+
+      // For range filters, just update local state (debounced application will handle URL update)
+      setFilters(tempCopy);
     }
-  }, [router.query, router.isReady, facets]);
-
-  // Update URL with current filters
-  const updateURLWithFilters = (currentFilters) => {
-    const query = { ...router.query };
-
-    // Update array filters
-    if (currentFilters.propertyType.length > 0) {
-      query.propertyType = currentFilters.propertyType;
-    } else {
-      delete query.propertyType;
-    }
-
-    if (currentFilters.listingType.length > 0) {
-      query.listingType = currentFilters.listingType;
-    } else {
-      delete query.listingType;
-    }
-
-    if (currentFilters.city.length > 0) {
-      query.city = currentFilters.city;
-    } else {
-      delete query.city;
-    }
-
-    if (currentFilters.constructionStatus.length > 0) {
-      query.constructionStatus = currentFilters.constructionStatus;
-    } else {
-      delete query.constructionStatus;
-    }
-
-    if (currentFilters.furnishingStatus.length > 0) {
-      query.furnishingStatus = currentFilters.furnishingStatus;
-    } else {
-      delete query.furnishingStatus;
-    }
-
-    // Update range filters
-    if (currentFilters.priceMin.min > facets?.priceMin?.min) {
-      query.priceMinMin = currentFilters.priceMin.min;
-    } else {
-      delete query.priceMinMin;
-    }
-
-    if (currentFilters.priceMin.max < facets?.priceMin?.max) {
-      query.priceMinMax = currentFilters.priceMin.max;
-    } else {
-      delete query.priceMinMax;
-    }
-
-    if (currentFilters.totalArea.min > facets?.totalArea?.min) {
-      query.totalAreaMin = currentFilters.totalArea.min;
-    } else {
-      delete query.totalAreaMin;
-    }
-
-    if (currentFilters.totalArea.max < facets?.totalArea?.max) {
-      query.totalAreaMax = currentFilters.totalArea.max;
-    } else {
-      delete query.totalAreaMax;
-    }
-
-    if (currentFilters.builtUpArea.min > facets?.builtUpArea?.min) {
-      query.builtUpAreaMin = currentFilters.builtUpArea.min;
-    } else {
-      delete query.builtUpAreaMin;
-    }
-
-    if (currentFilters.builtUpArea.max < facets?.builtUpArea?.max) {
-      query.builtUpAreaMax = currentFilters.builtUpArea.max;
-    } else {
-      delete query.builtUpAreaMax;
-    }
-
-    if (currentFilters.carpetArea.min > facets?.carpetArea?.min) {
-      query.carpetAreaMin = currentFilters.carpetArea.min;
-    } else {
-      delete query.carpetAreaMin;
-    }
-
-    if (currentFilters.carpetArea.max < facets?.carpetArea?.max) {
-      query.carpetAreaMax = currentFilters.carpetArea.max;
-    } else {
-      delete query.carpetAreaMax;
-    }
-
-    // Reset to page 1 when filters change
-    query.page = 1;
-
-    router.push({
-      pathname: router.pathname,
-      query,
-    });
   };
 
-  // Handle filter changes
-  const handleFilterChange = (filterType, value) => {
-    setFilters((prev) => ({
-      ...prev,
-      [filterType]: value,
-    }));
-  };
-
-  // Handle range filter changes
-  const handleRangeFilterChange = (filterType, range) => {
-    setFilters((prev) => ({
-      ...prev,
-      [filterType]: range,
-    }));
-  };
-
-  // Handle page change
-  const handlePageChange = (page) => {
-    const query = { ...router.query, page };
-    router.push({
-      pathname: router.pathname,
-      query,
-    });
-  };
-
-  // Handle results per page change
-  const handleResultsPerPageChange = (limit) => {
-    const query = { ...router.query, limit, page: 1 };
-    router.push({
-      pathname: router.pathname,
-      query,
-    });
-  };
-
-  // Clear all filters
   const clearAllFilters = () => {
-    setFilters({
+    const clearedFilters = {
       propertyType: [],
       listingType: [],
       city: [],
@@ -309,133 +338,239 @@ const PropertiesContent = (props) => {
         min: facets?.carpetArea?.min || 0,
         max: facets?.carpetArea?.max || 10000,
       },
-    });
-    router.push({
-      pathname: router.pathname,
-      query: {},
-    });
+    };
+    setFilters(clearedFilters);
+    updateURLWithFilters(clearedFilters);
+  };
+
+  const hasActiveFilters = () => {
+    return (
+      filters.propertyType.length > 0 ||
+      filters.listingType.length > 0 ||
+      filters.city.length > 0 ||
+      filters.constructionStatus.length > 0 ||
+      filters.furnishingStatus.length > 0 ||
+      filters.priceMin.min > (facets?.priceMin?.min || 0) ||
+      filters.priceMin.max < (facets?.priceMin?.max || 100000000) ||
+      filters.totalArea.min > (facets?.totalArea?.min || 0) ||
+      filters.totalArea.max < (facets?.totalArea?.max || 10000) ||
+      filters.builtUpArea.min > (facets?.builtUpArea?.min || 0) ||
+      filters.builtUpArea.max < (facets?.builtUpArea?.max || 10000) ||
+      filters.carpetArea.min > (facets?.carpetArea?.min || 0) ||
+      filters.carpetArea.max < (facets?.carpetArea?.max || 10000)
+    );
   };
 
   return (
-    <div className="min-h-screen bg-brand-gray-300">
-      <div className="container mx-auto px-4 py-8">
-        <BreadcrumbMenu
-          items={[
-            { label: "Home", href: "/" },
-            { label: "Properties", href: "/properties" },
-          ]}
-        />
-
-        <div className="flex flex-col lg:flex-row gap-8 mt-8">
-          {/* Filters Sidebar */}
-          <div className="lg:w-1/4">
-            <div className="bg-white rounded-lg shadow-md p-6 sticky top-4">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-semibold text-gray-800">
-                  <VscSettings className="inline mr-2" />
+    <main className="bg-brand-gray-300">
+      <div className="container--boxed">
+        <div>
+          <BreadcrumbMenu />
+        </div>
+        <div className="grid grid-cols-12 lg:gap-6 xl:gap-8">
+          <div className="col-span-3 hidden lg:block pb-8">
+            <Filters
+              facets={facets}
+              filters={filters}
+              filtersChangeHandler={filtersChangeHandler}
+              clearAllFilters={clearAllFilters}
+              hasActiveFilters={hasActiveFilters()}
+              isFiltering={isFiltering}
+              onApplyFilters={() => updateURLWithFilters(filters)}
+            />
+          </div>
+          <div className="col-span-12 lg:col-span-9">
+            <h1 className="heading--h3 text-brand-blue-700 font-semibold mb-4">
+              Properties for Sale and Rent
+            </h1>
+            <div className="mb-10">
+              <div className="mb-4">
+                <p className="text-brand-gray mb-4">
+                  We've found <strong>{totalCount || properties.length}</strong>{" "}
+                  result{totalCount !== 1 ? "s" : ""} that match
+                  {totalCount !== 1 ? "" : "es"} your criteria. All of our
+                  properties are carefully verified to ensure they meet your
+                  expectations. Learn more about them below.
+                </p>
+                {hasActiveFilters() && (
+                  <div className="mb-4 p-4 bg-brand-theme/5 border border-brand-theme/20 rounded-lg">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm font-medium text-brand-theme">
+                        Active Filters:
+                      </span>
+                      <button
+                        onClick={clearAllFilters}
+                        className="text-sm text-brand-theme hover:underline font-medium"
+                      >
+                        Clear all
+                      </button>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {filters.propertyType.length > 0 && (
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-brand-theme/10 text-brand-theme capitalize">
+                          Property Type: {filters.propertyType.join(", ")}
+                        </span>
+                      )}
+                      {filters.listingType.length > 0 && (
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-brand-theme/10 text-brand-theme capitalize">
+                          Listing Type: {filters.listingType.join(", ")}
+                        </span>
+                      )}
+                      {filters.city.length > 0 && (
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-brand-theme/10 text-brand-theme capitalize">
+                          City: {filters.city.join(", ")}
+                        </span>
+                      )}
+                      {filters.constructionStatus.length > 0 && (
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-brand-theme/10 text-brand-theme capitalize">
+                          Construction: {filters.constructionStatus.join(", ")}
+                        </span>
+                      )}
+                      {filters.furnishingStatus.length > 0 && (
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-brand-theme/10 text-brand-theme capitalize">
+                          Furnishing: {filters.furnishingStatus.join(", ")}
+                        </span>
+                      )}
+                      {(filters.priceMin.min > (facets?.priceMin?.min || 0) ||
+                        filters.priceMin.max <
+                          (facets?.priceMin?.max || 100000000)) && (
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-brand-theme/10 text-brand-theme">
+                          Price: ₹{filters.priceMin.min.toLocaleString()} - ₹
+                          {filters.priceMin.max.toLocaleString()}
+                        </span>
+                      )}
+                      {(filters.totalArea.min > (facets?.totalArea?.min || 0) ||
+                        filters.totalArea.max <
+                          (facets?.totalArea?.max || 10000)) && (
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-brand-theme/10 text-brand-theme">
+                          Total Area: {filters.totalArea.min.toLocaleString()} -{" "}
+                          {filters.totalArea.max.toLocaleString()} sq ft
+                        </span>
+                      )}
+                      {(filters.builtUpArea.min >
+                        (facets?.builtUpArea?.min || 0) ||
+                        filters.builtUpArea.max <
+                          (facets?.builtUpArea?.max || 10000)) && (
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-brand-theme/10 text-brand-theme">
+                          Built Up Area:{" "}
+                          {filters.builtUpArea.min.toLocaleString()} -{" "}
+                          {filters.builtUpArea.max.toLocaleString()} sq ft
+                        </span>
+                      )}
+                      {(filters.carpetArea.min >
+                        (facets?.carpetArea?.min || 0) ||
+                        filters.carpetArea.max <
+                          (facets?.carpetArea?.max || 10000)) && (
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-brand-theme/10 text-brand-theme">
+                          Carpet Area: {filters.carpetArea.min.toLocaleString()}{" "}
+                          - {filters.carpetArea.max.toLocaleString()} sq ft
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+              <nav className="border-b border-b-brand-blue-700/25 mb-6 hidden lg:flex ">
+                <ul className="flex gap-6">
+                  <li
+                    className={`-mb-px transition-opacity h-10 inline-flex items-center cursor-pointer border-b-2 border-b-brand-theme text-brand-theme font-semibold text-sm`}
+                  >
+                    <FaListUl className="mr-2" />
+                    Grid view
+                  </li>
+                  <li
+                    className={`-mb-px transition-opacity h-10 inline-flex items-center text-brand-gray cursor-not-allowed text-sm`}
+                  >
+                    <FaMapMarkerAlt className="mr-2" />
+                    List view (coming soon)
+                  </li>
+                </ul>
+              </nav>
+              <div className={`lg:hidden mt-8 grid gap-22`}>
+                <button className="text-brand-gray rounded-md flex items-center gap-1.5 flex-1 justify-center py-3 px-4 border border-solid border-brand-gray-500 transition-all duration-300 hover:bg-brand-theme/10 hover:border-brand-theme hover:text-brand-theme font-semibold mb-8">
+                  <VscSettings className="mr-2 font-semibold text-lg" />
                   Filters
-                </h2>
-                <button
-                  onClick={clearAllFilters}
-                  className="text-sm text-blue-600 hover:text-blue-800"
-                >
-                  Clear All
                 </button>
               </div>
 
-              <Filters
-                facets={facets}
-                filters={filters}
-                onFilterChange={handleFilterChange}
-                onRangeFilterChange={handleRangeFilterChange}
-                isFiltering={isFiltering}
+              <div className="grid gap-6 px-4 md:px-0 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 ">
+                {properties.length > 0 ? (
+                  properties.map((property, key) => (
+                    <PropertyCard key={key} property={property} />
+                  ))
+                ) : (
+                  <div className="col-span-full text-center py-12">
+                    <div className="max-w-md mx-auto">
+                      <div className="text-6xl mb-4">🏠</div>
+                      <h3 className="text-xl font-semibold text-brand-gray-700 mb-2">
+                        No properties found
+                      </h3>
+                      <p className="text-brand-gray mb-6">
+                        {hasActiveFilters()
+                          ? "Try adjusting your filters or clearing some of them to see more results."
+                          : "There are currently no properties available. Please check back later."}
+                      </p>
+                      {hasActiveFilters() && (
+                        <button
+                          onClick={clearAllFilters}
+                          className="inline-flex items-center px-4 py-2 bg-brand-theme text-white rounded-md hover:bg-brand-theme/90 transition-colors"
+                        >
+                          Clear All Filters
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className="flex items-center justify-between flex-col sm:flex-row gap-4">
+              <ResultPerPage
+                currentLimit={resultsPerPage || 12}
+                onLimitChange={(newLimit) => {
+                  const newQuery = {
+                    ...router.query,
+                    limit: newLimit,
+                    page: 1,
+                  };
+                  router.push(
+                    {
+                      pathname: router.pathname,
+                      query: newQuery,
+                    },
+                    undefined,
+                    { shallow: true }
+                  );
+                  // useEffect will automatically fetch data when query changes
+                }}
+              />
+              <Pagination
+                currentPage={currentPage || 1}
+                totalPages={Math.ceil(
+                  (totalCount || properties.length) / (resultsPerPage || 12)
+                )}
+                onPageChange={(page) => {
+                  const newQuery = { ...router.query, page };
+                  router.push(
+                    {
+                      pathname: router.pathname,
+                      query: newQuery,
+                    },
+                    undefined,
+                    { shallow: true }
+                  );
+                  // useEffect will automatically fetch data when query changes
+                }}
               />
             </div>
           </div>
-
-          {/* Properties List */}
-          <div className="lg:w-3/4">
-            {/* Header */}
-            <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                <div>
-                  <h1 className="text-2xl font-bold text-gray-800">
-                    Properties
-                  </h1>
-                  <p className="text-gray-600">{totalCount} properties found</p>
-                </div>
-                <div className="flex items-center gap-4">
-                  <ResultPerPage
-                    current={resultsPerPage}
-                    onChange={handleResultsPerPageChange}
-                    options={[12, 24, 48]}
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Properties Grid */}
-            {isFiltering ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {[...Array(6)].map((_, index) => (
-                  <div
-                    key={index}
-                    className="bg-white rounded-lg shadow-md p-6 animate-pulse"
-                  >
-                    <div className="h-48 bg-gray-200 rounded mb-4"></div>
-                    <div className="h-4 bg-gray-200 rounded mb-2"></div>
-                    <div className="h-4 bg-gray-200 rounded mb-2 w-3/4"></div>
-                    <div className="h-4 bg-gray-200 rounded w-1/2"></div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {properties.map((property) => (
-                  <PropertyCard key={property._id} property={property} />
-                ))}
-              </div>
-            )}
-
-            {/* Pagination */}
-            {totalCount > 0 && (
-              <div className="mt-8">
-                <Pagination
-                  currentPage={currentPage}
-                  totalPages={Math.ceil(totalCount / resultsPerPage)}
-                  onPageChange={handlePageChange}
-                />
-              </div>
-            )}
-
-            {/* No Results */}
-            {!isFiltering && properties.length === 0 && (
-              <div className="text-center py-12">
-                <div className="text-gray-400 text-6xl mb-4">🏠</div>
-                <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                  No properties found
-                </h3>
-                <p className="text-gray-600 mb-4">
-                  Try adjusting your filters to find more properties.
-                </p>
-                <button
-                  onClick={clearAllFilters}
-                  className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700"
-                >
-                  Clear All Filters
-                </button>
-              </div>
-            )}
-          </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 };
 
 const Properties = ({ data }) => {
   const { facets, properties, totalCount, currentPage, resultsPerPage } = data;
-
   return (
     <Layout>
       <PropertiesContent
