@@ -1,118 +1,72 @@
 import Image from "next/image";
 import Link from "next/link";
+
 const WhyUs = () => {
   const whyUsData = [
     {
-      title: "I need help promoting my brand",
+      title: "Verified Property Listings",
       description:
-        "Find the perfect content creators to boost your brand visibility and connect with your target audience across platforms like Instagram, YouTube, and TikTok.",
-      linkTitle: "Explore creator categories",
+        "All properties are verified by our team with detailed information, high-quality images, and accurate pricing to help you make informed decisions.",
+      linkTitle: "Browse verified properties",
       linkHref: "/creators",
+      image: "/images/home/promote-brand.svg",
     },
     {
-      title: "Finding the right creator",
+      title: "Smart Property Search",
       description:
-        "Choosing the right content creator is crucial. Let us guide you through audience demographics, engagement rates, and campaign fit to make the right choice.",
-      linkTitle: "How to find a content creator",
+        "Use our advanced filters to find properties by location, price range, property type, and amenities. Save your searches and get notified of new listings.",
+      linkTitle: "Start your search",
       linkHref: "/creators",
+      image: "/images/home/find-right-creator.svg",
     },
     {
-      title: "Can I collaborate remotely?",
+      title: "Professional Support",
       description:
-        "Most content creators offer online brand collaborations, shout-outs, product placements and live reviews. Browse their profiles or use our smart match tool.",
-      linkTitle: "Start your online campaign",
+        "Get expert guidance from our real estate professionals. From property viewing to closing deals, we're here to support you every step of the way.",
+      linkTitle: "Contact our team",
       linkHref: "/creators",
+      image: "/images/home/remote-collaboration.svg",
     },
   ];
 
   return (
-    <section className="md:section--sm">
+    <section className="md:section--sm" aria-labelledby="why-us-heading">
       <div className="container--boxed--lg">
         <p className="uppercase font-semibold text-sm text-center text-brand-theme mb-0.5">
-          WHY USE CREATOR LISTING?
+          WHY CHOOSE 11YARDS?
         </p>
-        <h2 className="heading--h3 text-center mb-10 md:mb-12 text-brand-blue-700">
-          Connecting you with the right content creators for your brand
+        <h2
+          id="why-us-heading"
+          className="heading--h3 text-center mb-10 md:mb-12 text-brand-blue-700"
+        >
+          Your trusted partner in finding the perfect property
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-8 gap-x-4">
-          {whyUsData.slice(0, 1).map((singleQuestion, index) => {
-            return (
-              <div key={index}>
-                <Image
-                  src={"/images/home/promote-brand.svg"}
-                  alt={singleQuestion.title}
-                  width={104}
-                  height={118}
-                  style={{ width: "auto", height: "118px" }}
-                  className="mb-3"
-                />
-                <h3 className="text-1.5xl font-bold text-brand-blue-700 mb-2 md:mb-4">
-                  {singleQuestion.title}
-                </h3>
-                <p className="text-brand-gray-500 mb-2 md:mb-4">
-                  {singleQuestion.description}
-                </p>
-                <Link
-                  className="text-brand-theme underline "
-                  href={singleQuestion.linkHref}
-                >
-                  {singleQuestion.linkTitle}
-                </Link>
-              </div>
-            );
-          })}
-          {whyUsData.slice(1, 2).map((singleQuestion, index) => {
-            return (
-              <div key={index}>
-                <Image
-                  src={"/images/home/find-right-creator.svg"}
-                  alt={singleQuestion.title}
-                  width={104}
-                  height={118}
-                  style={{ width: "auto", height: "118px" }}
-                  className="mb-3"
-                />
-                <h3 className="text-1.5xl font-bold text-brand-blue-700 mb-2 md:mb-4">
-                  {singleQuestion.title}
-                </h3>
-                <p className="text-brand-gray-500 mb-2 md:mb-4">
-                  {singleQuestion.description}
-                </p>
-                <Link
-                  className="text-brand-theme underline "
-                  href={singleQuestion.linkHref}
-                >
-                  {singleQuestion.linkTitle}
-                </Link>
-              </div>
-            );
-          })}
-          {whyUsData.slice(2, 3).map((singleQuestion, index) => {
-            return (
-              <div key={index}>
-                <Image
-                  src={"/images/home/remote-collaboration.svg"}
-                  alt={singleQuestion.title}
-                  width={104}
-                  height={118}
-                  style={{ width: "auto", height: "118px" }}
-                  className="mb-3"
-                />
-                <h3 className="text-1.5xl font-bold text-brand-blue-700 mb-2 md:mb-4">
-                  {singleQuestion.title}
-                </h3>
-                <p className="text-brand-gray-500 mb-2 md:mb-4">
-                  {singleQuestion.description}
-                </p>
-                <Link
-                  className="text-brand-theme underline "
-                  href={singleQuestion.linkHref}
-                >
-                  {singleQuestion.linkTitle}
-                </Link>
-              </div>
-            );
-          })}
+          {whyUsData.map((feature, index) => (
+            <article key={index} className="text-center">
+              <Image
+                src={feature.image}
+                alt={`Illustration for ${feature.title}`}
+                width={104}
+                height={118}
+                style={{ width: "auto", height: "118px" }}
+                className="mb-3 mx-auto"
+              />
+              <h3 className="text-1.5xl font-bold text-brand-blue-700 mb-2 md:mb-4">
+                {feature.title}
+              </h3>
+              <p className="text-brand-gray-500 mb-2 md:mb-4">
+                {feature.description}
+              </p>
+              <Link
+                className="text-brand-theme underline link-accessible"
+                href={feature.linkHref}
+                aria-label={`${feature.linkTitle} - ${feature.title}`}
+              >
+                {feature.linkTitle}
+              </Link>
+            </article>
+          ))}
         </div>
       </div>
     </section>

@@ -1,0 +1,467 @@
+// Accessibility-focused CSS utilities for Real Estate
+
+// Screen Reader Only - Hidden visually but accessible to screen readers
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+// Focus indicator styles
+.focus-visible {
+  outline: 2px solid #3b82f6 !important;
+  outline-offset: 2px !important;
+  border-radius: 4px !important;
+}
+
+// High contrast focus indicator
+@media (prefers-contrast: high) {
+  .focus-visible {
+    outline: 3px solid #000000 !important;
+    outline-offset: 3px !important;
+  }
+}
+
+// Reduced motion support
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+// High contrast mode support
+@media (prefers-contrast: high) {
+  .button--primary {
+    background-color: #000000 !important;
+    color: #ffffff !important;
+    border: 2px solid #000000 !important;
+  }
+
+  .button--secondary {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    border: 2px solid #000000 !important;
+  }
+
+  .text-brand-gray {
+    color: #000000 !important;
+  }
+
+  .text-brand-blue-700 {
+    color: #000000 !important;
+  }
+}
+
+// Focus trap indicator
+.focus-trap {
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    border: 2px solid #3b82f6;
+    border-radius: 6px;
+    pointer-events: none;
+    z-index: 1000;
+  }
+}
+
+// Skip link styles
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 6px;
+  background: #000000;
+  color: #ffffff;
+  padding: 8px;
+  text-decoration: none;
+  border-radius: 4px;
+  z-index: 10000;
+  transition: top 0.3s;
+
+  &:focus {
+    top: 6px;
+  }
+}
+
+// Loading states for screen readers
+.sr-loading {
+  &::after {
+    content: " (Loading...)";
+  }
+}
+
+.sr-error {
+  &::after {
+    content: " (Error)";
+  }
+}
+
+.sr-success {
+  &::after {
+    content: " (Success)";
+  }
+}
+
+// ARIA live regions
+[aria-live="polite"] {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+[aria-live="assertive"] {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+// Focus management
+.focus-manager {
+  &:focus {
+    outline: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+  }
+}
+
+// Keyboard navigation support
+.keyboard-nav {
+  &:focus {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+  }
+}
+
+// High contrast text
+.high-contrast-text {
+  @media (prefers-contrast: high) {
+    color: #000000 !important;
+    background-color: #ffffff !important;
+  }
+}
+
+// Reduced motion alternatives
+.reduced-motion-alt {
+  @media (prefers-reduced-motion: reduce) {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+// Focus indicator for interactive elements
+.interactive-element {
+  &:focus {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  &:focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+// Error state accessibility
+.error-state {
+  border: 2px solid #ef4444;
+
+  &[aria-invalid="true"] {
+    border-color: #ef4444;
+  }
+
+  &::before {
+    content: "Error: ";
+    color: #ef4444;
+    font-weight: bold;
+  }
+}
+
+// Success state accessibility
+.success-state {
+  border: 2px solid #10b981;
+
+  &::before {
+    content: "Success: ";
+    color: #10b981;
+    font-weight: bold;
+  }
+}
+
+// Loading state accessibility
+.loading-state {
+  position: relative;
+
+  &::after {
+    content: "Loading...";
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+}
+
+// Form field accessibility
+.form-field {
+  &:focus {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  &[aria-required="true"]::after {
+    content: " *";
+    color: #ef4444;
+  }
+
+  &[aria-invalid="true"] {
+    border-color: #ef4444;
+    box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
+  }
+}
+
+// Button accessibility
+.button-accessible {
+  &:focus {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  &:focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  // High contrast support
+  @media (prefers-contrast: high) {
+    border: 2px solid currentColor;
+  }
+}
+
+// Link accessibility
+.link-accessible {
+  &:focus {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  &:focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  // Underline on focus for better visibility
+  &:focus {
+    text-decoration: underline;
+  }
+}
+
+// Image accessibility
+.image-accessible {
+  &[alt=""] {
+    border: 2px dashed #6b7280;
+
+    &::before {
+      content: "Decorative image";
+      position: absolute;
+      left: -10000px;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+  }
+}
+
+// Table accessibility
+.table-accessible {
+  border-collapse: collapse;
+
+  th,
+  td {
+    border: 1px solid #d1d5db;
+    padding: 8px;
+    text-align: left;
+  }
+
+  th {
+    background-color: #f3f4f6;
+    font-weight: bold;
+  }
+
+  caption {
+    font-weight: bold;
+    margin-bottom: 8px;
+    text-align: left;
+  }
+}
+
+// List accessibility
+.list-accessible {
+  li {
+    margin-bottom: 4px;
+  }
+
+  // Custom markers for better screen reader support
+  &[role="list"] {
+    list-style: none;
+
+    li::before {
+      content: "• ";
+      color: #3b82f6;
+      font-weight: bold;
+    }
+  }
+}
+
+// Navigation accessibility
+.nav-accessible {
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  li {
+    margin: 0;
+    padding: 0;
+  }
+
+  a {
+    display: block;
+    padding: 8px 16px;
+    text-decoration: none;
+
+    &:focus {
+      outline: 2px solid #3b82f6;
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
+  }
+
+  // Current page indicator
+  .current-page {
+    background-color: #3b82f6;
+    color: #ffffff;
+
+    &::after {
+      content: " (Current page)";
+    }
+  }
+}
+
+// Modal accessibility
+.modal-accessible {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+
+  .modal-content {
+    position: relative;
+    background-color: #ffffff;
+    margin: 50px auto;
+    padding: 20px;
+    max-width: 500px;
+    border-radius: 8px;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+
+    &:focus {
+      outline: 2px solid #3b82f6;
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
+  }
+}
+
+// Tooltip accessibility
+.tooltip-accessible {
+  position: relative;
+
+  .tooltip-content {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #000000;
+    color: #ffffff;
+    padding: 8px;
+    border-radius: 4px;
+    font-size: 14px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 5px solid transparent;
+      border-top-color: #000000;
+    }
+  }
+
+  &:hover .tooltip-content,
+  &:focus .tooltip-content {
+    opacity: 1;
+  }
+}

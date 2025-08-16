@@ -19,15 +19,19 @@ const Header = () => {
   }, []);
 
   return (
-    <header className={`py-4 bg-white  ${currentScroll && "shadow-sm"}`}>
+    <header
+      className={`py-4 bg-white ${currentScroll && "shadow-sm"}`}
+      role="banner"
+      aria-label="Site header"
+    >
       <div className="container--boxed flex items-center justify-between">
         <div className="text-brand-theme-500">
-          <Link href={"/"}>
+          <Link href={"/"} aria-label="Go to homepage">
             <Image
               src={"/images/logos/logo-header.svg"}
               width={199}
               height={44}
-              alt=""
+              alt="Real Estate Logo - Click to go to homepage"
               style={{ height: "56px" }}
               fetchPriority="high"
             />
@@ -37,9 +41,10 @@ const Header = () => {
         <div>
           <Link
             href={"/creators"}
-            className="button--secondary w-full btn--black sm text-sm pill flex items-center gap-1.5 hi"
+            className="button--secondary w-full btn--black sm text-sm pill flex items-center gap-1.5 hi button-accessible"
+            aria-label="Search for properties"
           >
-            <IoSearch className="text-base" />
+            <IoSearch className="text-base" aria-hidden="true" />
             <span>Search Properties</span>
           </Link>
         </div>
