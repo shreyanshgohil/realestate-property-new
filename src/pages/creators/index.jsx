@@ -4,6 +4,7 @@ import Pagination from "@/components/common/Pagination";
 import ResultPerPage from "@/components/common/ResultPerPage";
 import Layout from "@/components/layout";
 import Filters from "@/components/pages/properties/filters";
+import SEO from "@/components/common/SEO";
 import { useRouter } from "next/router";
 import { useEffect, useState, useCallback } from "react";
 import { FaListUl, FaMapMarkerAlt } from "react-icons/fa";
@@ -644,15 +645,23 @@ const PropertiesContent = (props) => {
 const Properties = ({ data }) => {
   const { facets, properties, totalCount, currentPage, resultsPerPage } = data;
   return (
-    <Layout>
-      <PropertiesContent
-        facets={facets}
-        properties={properties}
-        totalCount={totalCount}
-        currentPage={currentPage}
-        resultsPerPage={resultsPerPage}
+    <>
+      <SEO
+        title="Properties for Sale and Rent | 11yards Real Estate"
+        description="Browse thousands of verified properties for sale, rent, and lease across India. Find apartments, houses, commercial properties, and plots with detailed information, virtual tours, and RERA verification."
+        keywords="properties for sale, properties for rent, real estate listings, apartments, houses, commercial properties, plots, property search, 11yards, India"
+        url="/creators"
       />
-    </Layout>
+      <Layout>
+        <PropertiesContent
+          facets={facets}
+          properties={properties}
+          totalCount={totalCount}
+          currentPage={currentPage}
+          resultsPerPage={resultsPerPage}
+        />
+      </Layout>
+    </>
   );
 };
 
