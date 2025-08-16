@@ -157,7 +157,7 @@ const PropertyDetailPage = () => {
     <>
       <PropertySEO
         property={property}
-        url={`/creators/${id}/${router.query.slug}`}
+        url={`/properties/${id}/${router.query.slug}`}
       />
       <Layout>
         <div className="min-h-screen bg-brand-gray-300">
@@ -165,7 +165,7 @@ const PropertyDetailPage = () => {
             <BreadcrumbMenu
               items={[
                 { label: "Home", href: "/" },
-                { label: "Properties", href: "/creators" },
+                { label: "Properties", href: "/properties" },
                 { label: property.name, href: "#" },
               ]}
             />

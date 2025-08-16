@@ -8,23 +8,23 @@ const WhyUs = () => {
       description:
         "All properties are verified by our team with detailed information, high-quality images, and accurate pricing to help you make informed decisions.",
       linkTitle: "Browse verified properties",
-      linkHref: "/creators",
-      image: "/images/home/promote-brand.svg",
+      linkHref: "/properties",
+      image: "/images/home/promoting-brand.svg",
     },
     {
       title: "Smart Property Search",
       description:
         "Use our advanced filters to find properties by location, price range, property type, and amenities. Save your searches and get notified of new listings.",
       linkTitle: "Start your search",
-      linkHref: "/creators",
-      image: "/images/home/find-right-creator.svg",
+      linkHref: "/properties",
+      image: "/images/home/search.svg",
     },
     {
       title: "Professional Support",
       description:
         "Get expert guidance from our real estate professionals. From property viewing to closing deals, we're here to support you every step of the way.",
       linkTitle: "Contact our team",
-      linkHref: "/creators",
+      linkHref: "/properties",
       image: "/images/home/remote-collaboration.svg",
     },
   ];

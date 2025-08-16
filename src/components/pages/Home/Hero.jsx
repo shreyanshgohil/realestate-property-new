@@ -37,7 +37,7 @@ const Hero = ({ propertyTypes }) => {
     }
 
     router.push({
-      pathname: "/creators", // This will be the properties page
+      pathname: "/properties", // This will be the properties page
       query,
     });
   };

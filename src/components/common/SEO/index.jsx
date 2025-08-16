@@ -39,7 +39,7 @@ const SEO = ({
         "@type": "EntryPoint",
         urlTemplate: `${
           process.env.NEXT_PUBLIC_SITE_URL || "https://11yards.com"
-        }/creators?q={search_term_string}`,
+        }/properties?q={search_term_string}`,
       },
       "query-input": "required name=search_term_string",
     },

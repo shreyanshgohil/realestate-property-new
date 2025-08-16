@@ -91,7 +91,7 @@ const InfluencerCard = ({ influencer }) => {
             </div>
           </div>
           <Link
-            href={`/creators/${influencer._id}/${slugify(
+            href={`/properties/${influencer._id}/${slugify(
               influencer.firstName
             )}`}
             className="button--primary w-full inline-block mt-6"

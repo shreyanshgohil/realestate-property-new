@@ -650,7 +650,7 @@ const Properties = ({ data }) => {
         title="Properties for Sale and Rent | 11yards Real Estate"
         description="Browse thousands of verified properties for sale, rent, and lease across India. Find apartments, houses, commercial properties, and plots with detailed information, virtual tours, and RERA verification."
         keywords="properties for sale, properties for rent, real estate listings, apartments, houses, commercial properties, plots, property search, 11yards, India"
-        url="/creators"
+        url="/properties"
       />
       <Layout>
         <PropertiesContent

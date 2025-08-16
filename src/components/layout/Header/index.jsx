@@ -40,7 +40,7 @@ const Header = () => {
 
         <div>
           <Link
-            href={"/creators"}
+            href={"/properties"}
             className="button--secondary w-full btn--black sm text-sm pill flex items-center gap-1.5 hi button-accessible"
             aria-label="Search for properties"
           >

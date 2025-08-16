@@ -26,7 +26,7 @@ export const getServerSideProps = async ({ res }) => {
         <priority>1.0</priority>
       </url>
       <url>
-        <loc>${baseUrl}/creators</loc>
+        <loc>${baseUrl}/properties</loc>
         <lastmod>${new Date().toISOString()}</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.9</priority>
@@ -61,11 +61,11 @@ export const getServerSideProps = async ({ res }) => {
         .map(
           (property) => `
         <url>
-          <loc>${baseUrl}/creators/${property._id}/${
+          <loc>${baseUrl}/properties/${property._id}/${
             property.name
               ?.toLowerCase()
               .replace(/\s+/g, "-")
-              .replace(/[^a-z0-9-]/g, "") ||
+              .replace(/[0-9-]/g, "") ||
             `${property.propertyType?.toLowerCase()}-${property.listingType?.toLowerCase()}-${property.city?.toLowerCase()}`
           }</loc>
           <lastmod>${new Date(

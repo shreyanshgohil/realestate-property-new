@@ -30,7 +30,7 @@ const PropertySEO = ({ property, url = "", ...props }) => {
     image: images.length > 0 ? images[0].url : undefined,
     url: `${
       process.env.NEXT_PUBLIC_SITE_URL || "https://11yards.com"
-    }/creators/${property?._id}`,
+    }/properties/${property?._id}`,
     knowsAbout: [propertyType, listingType, city, stateName],
     knowsLanguage: ["English", "Hindi"],
     address: {
